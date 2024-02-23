@@ -41,6 +41,25 @@ class AccountTest {
         balanceShouldBeSeven(account);
     }
 
+    @Test
+    void should_Return_All_Uncommited_Changes() throws InsufficientBalanceException {
+        // Given
+        var account = accountWithTen();
+
+        // When
+        account.withdraw(Money.from(3d));
+        account.withdraw(Money.from(2d));
+
+        // Then
+        assertEquals(2, account.getUncommittedChanges().size());
+
+        assertEquals(account.getID(), account.getUncommittedChanges().get(0).accountID());
+        assertEquals(Money.from(3d), account.getUncommittedChanges().get(0).amount());
+
+        assertEquals(account.getID(), account.getUncommittedChanges().get(1).accountID());
+        assertEquals(Money.from(2d), account.getUncommittedChanges().get(1).amount());
+    }
+
     private void balanceShouldBeSeven(Account account) {
         assertEquals(Money.from(7d), account.getBalance());
     }
