@@ -13,8 +13,8 @@ public class Account {
     private Money balance;
     private final List<MoneyWithdrawn> uncommitedChanges;
 
-    public Account(Money balance) {
-        this.id = AccountID.from(UUID.randomUUID().toString());
+    public Account(AccountID accountID, Money balance) {
+        this.id = accountID;
         this.balance = balance;
         this.uncommitedChanges = new ArrayList<>();
     }
