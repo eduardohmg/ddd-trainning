@@ -4,9 +4,9 @@ import org.garcia.trainning.ddd.account.actions.withdraw.InsufficientBalanceExce
 
 public class AccountService {
 
-    private final AccountRepository repository;
+    private final AccountInMemoryRepository repository;
 
-    public AccountService(AccountRepository repository) {
+    public AccountService(AccountInMemoryRepository repository) {
         this.repository = repository;
     }
 

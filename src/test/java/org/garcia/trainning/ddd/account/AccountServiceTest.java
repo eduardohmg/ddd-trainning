@@ -10,7 +10,7 @@ public class AccountServiceTest {
     @Test
     void shouldWithdrawMoneyFromAccount() throws InsufficientBalanceException {
         // Given
-        var repository = mock(AccountRepository.class);
+        var repository = mock(AccountInMemoryRepository.class);
         var service = new AccountService(repository);
 
         var account = mock(Account.class);
@@ -28,7 +28,7 @@ public class AccountServiceTest {
         repositoryWasCalledToPersistAccountChanges(account, repository);
     }
 
-    private void repositoryWasCalledToFetchTheRightAccountID(AccountID accountID, AccountRepository repository) {
+    private void repositoryWasCalledToFetchTheRightAccountID(AccountID accountID, AccountInMemoryRepository repository) {
         verify(repository).loadAccountFrom(accountID);
     }
 
@@ -36,7 +36,7 @@ public class AccountServiceTest {
         verify(account).withdraw(amount);
     }
 
-    private void repositoryWasCalledToPersistAccountChanges(Account account, AccountRepository repository) {
+    private void repositoryWasCalledToPersistAccountChanges(Account account, AccountInMemoryRepository repository) {
         verify(repository).update(account);
     }
 }

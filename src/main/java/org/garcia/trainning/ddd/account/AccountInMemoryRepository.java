@@ -3,11 +3,11 @@ package org.garcia.trainning.ddd.account;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountRepository {
+public class AccountInMemoryRepository {
 
     private final List<Account> accounts;
 
-    public AccountRepository() {
+    public AccountInMemoryRepository() {
         this.accounts = new ArrayList<>();
     }
 

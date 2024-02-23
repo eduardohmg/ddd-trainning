@@ -11,7 +11,7 @@ public class AccountInMemoryRepositoryTest {
     @Test
     void should_Save_And_Load_Account() {
         // Given
-        var repository = new AccountRepository();
+        var repository = new AccountInMemoryRepository();
         var accountID = AccountID.from(UUID.randomUUID().toString());
         var savedAccount = new Account(accountID, Money.from(100d));
 
