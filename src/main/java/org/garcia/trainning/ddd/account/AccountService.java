@@ -1,6 +1,7 @@
 package org.garcia.trainning.ddd.account;
 
 import org.garcia.trainning.ddd.account.actions.withdraw.InsufficientBalanceException;
+import org.garcia.trainning.ddd.infra.AccountInMemoryRepository;
 
 public class AccountService {
 

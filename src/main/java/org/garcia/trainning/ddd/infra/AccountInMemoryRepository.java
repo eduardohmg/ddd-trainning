@@ -1,4 +1,8 @@
-package org.garcia.trainning.ddd.account;
+package org.garcia.trainning.ddd.infra;
+
+import org.garcia.trainning.ddd.account.Account;
+import org.garcia.trainning.ddd.account.AccountID;
+import org.garcia.trainning.ddd.account.AccountRepository;
 
 import java.util.ArrayList;
 import java.util.List;
