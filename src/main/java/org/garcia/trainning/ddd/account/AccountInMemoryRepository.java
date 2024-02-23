@@ -3,7 +3,7 @@ package org.garcia.trainning.ddd.account;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountInMemoryRepository {
+public class AccountInMemoryRepository implements AccountRepository {
 
     private final List<Account> accounts;
 
