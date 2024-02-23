@@ -14,4 +14,8 @@ public class Account {
         }
         balance = new Money(balance.amount() - amount.amount());
     }
+
+    public Money getBalance() {
+        return balance;
+    }
 }
