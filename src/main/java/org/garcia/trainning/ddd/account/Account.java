@@ -5,18 +5,17 @@ import org.garcia.trainning.ddd.account.actions.withdraw.MoneyWithdrawn;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Account {
 
     private AccountID id;
     private Money balance;
-    private final List<MoneyWithdrawn> uncommitedChanges;
+    private final List<MoneyWithdrawn> uncommittedChanges;
 
     public Account(AccountID accountID, Money balance) {
         this.id = accountID;
         this.balance = balance;
-        this.uncommitedChanges = new ArrayList<>();
+        this.uncommittedChanges = new ArrayList<>();
     }
 
     public AccountID getID() {
@@ -36,11 +35,11 @@ public class Account {
     }
 
     private void apply(MoneyWithdrawn event) {
-        this.uncommitedChanges.add(event);
+        this.uncommittedChanges.add(event);
         balance = new Money(balance.amount() - event.amount().amount());
     }
 
     public List<MoneyWithdrawn> getUncommittedChanges() {
-        return this.uncommitedChanges;
+        return this.uncommittedChanges;
     }
 }
