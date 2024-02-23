@@ -25,7 +25,7 @@ public class Account {
             throw new InsufficientBalanceException();
         }
 
-        apply(new MoneyWithdrawn(amount));
+        apply(new MoneyWithdrawn(this.id, amount));
     }
 
     private void apply(MoneyWithdrawn event) {

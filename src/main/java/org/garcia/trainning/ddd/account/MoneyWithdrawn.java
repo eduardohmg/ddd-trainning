@@ -1,4 +1,4 @@
 package org.garcia.trainning.ddd.account;
 
-public record MoneyWithdrawn(Money amount) {
+public record MoneyWithdrawn(AccountID accountID, Money amount) {
 }
