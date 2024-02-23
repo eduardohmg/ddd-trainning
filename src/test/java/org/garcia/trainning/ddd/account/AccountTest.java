@@ -4,8 +4,6 @@ import org.garcia.trainning.ddd.account.actions.withdraw.InsufficientBalanceExce
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class AccountTest {
@@ -82,7 +80,7 @@ class AccountTest {
     }
 
     private Account accountWithTen() {
-        return new Account(AccountID.from(UUID.randomUUID().toString()), Money.from(10d));
+        return Account.openWith(Money.from(10d));
     }
 
     private static void shouldNotBeAllowedWhenPerforming(Executable withdrawAction) {
