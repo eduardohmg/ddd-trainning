@@ -12,7 +12,12 @@ public class Account {
         if (balance.amount() < amount.amount()) {
             throw new InsufficientBalanceException();
         }
-        balance = new Money(balance.amount() - amount.amount());
+
+        apply(new MoneyWithdrawn(amount));
+    }
+
+    private void apply(MoneyWithdrawn event) {
+        balance = new Money(balance.amount() - event.amount().amount());
     }
 
     public Money getBalance() {
