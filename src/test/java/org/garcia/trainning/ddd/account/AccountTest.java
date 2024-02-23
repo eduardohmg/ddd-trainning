@@ -3,10 +3,19 @@ package org.garcia.trainning.ddd.account;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class AccountTest {
+
+    @Test
+    void accounts_Should_Have_A_Unique_ID() {
+        // Given
+        var account1 = new Account(Money.from(10d));
+        var account2 = new Account(Money.from(10d));
+
+        // Then
+        assertNotEquals(account1.getID(), account2.getID());
+    }
 
     @Test
     void should_Not_Be_Able_To_Withdraw_When_Insufficient_Balance() {
