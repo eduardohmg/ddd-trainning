@@ -10,11 +10,11 @@ class AccountTest {
     @Test
     void accounts_Should_Have_A_Unique_ID() {
         // Given
-        var account1 = new Account(Money.from(10d));
-        var account2 = new Account(Money.from(10d));
+        var firstAccount = accountWithTen();
+        var secondAccount = accountWithTen();
 
         // Then
-        assertNotEquals(account1.getID(), account2.getID());
+        accountHaveDifferentIDs(firstAccount, secondAccount);
     }
 
     @Test
@@ -23,10 +23,10 @@ class AccountTest {
         var account = accountWithTen();
 
         // When
-        var withdrawAction = withdrawHundred(account);
+        var withdrawAction = withdrawHundredFrom(account);
 
         // Then
-        shouldNotBeAllowed(withdrawAction);
+        shouldNotBeAllowedWhenPerforming(withdrawAction);
     }
 
     @Test
@@ -35,29 +35,43 @@ class AccountTest {
         var account = accountWithTen();
 
         // When
-        withdrawThree(account);
+        withdrawThreeFrom(account);
 
         // Then
         balanceShouldBeSeven(account);
     }
 
     @Test
-    void should_Return_All_Uncommited_Changes() throws InsufficientBalanceException {
+    void should_Return_All_Uncommitted_Changes() throws InsufficientBalanceException {
         // Given
         var account = accountWithTen();
 
         // When
-        account.withdraw(Money.from(3d));
-        account.withdraw(Money.from(2d));
+        withdrawThreeFrom(account);
+        withdrawTwoFrom(account);
 
         // Then
-        assertEquals(2, account.getUncommittedChanges().size());
+        thereAreTwoUncommitedChangesInThe(account);
+        firstChangeIsTheWithdrawThreeFrom(account);
+        secondChangeIsTheWithdrawTwoFrom(account);
+    }
 
-        assertEquals(account.getID(), account.getUncommittedChanges().get(0).accountID());
-        assertEquals(Money.from(3d), account.getUncommittedChanges().get(0).amount());
+    private static void accountHaveDifferentIDs(Account firstAccount, Account secondAccount) {
+        assertNotEquals(firstAccount.getID(), secondAccount.getID());
+    }
 
+    private static void secondChangeIsTheWithdrawTwoFrom(Account account) {
         assertEquals(account.getID(), account.getUncommittedChanges().get(1).accountID());
         assertEquals(Money.from(2d), account.getUncommittedChanges().get(1).amount());
+    }
+
+    private static void firstChangeIsTheWithdrawThreeFrom(Account account) {
+        assertEquals(account.getID(), account.getUncommittedChanges().get(0).accountID());
+        assertEquals(Money.from(3d), account.getUncommittedChanges().get(0).amount());
+    }
+
+    private static void thereAreTwoUncommitedChangesInThe(Account account) {
+        assertEquals(2, account.getUncommittedChanges().size());
     }
 
     private void balanceShouldBeSeven(Account account) {
@@ -68,16 +82,20 @@ class AccountTest {
         return new Account(Money.from(10d));
     }
 
-    private static void shouldNotBeAllowed(Executable withdrawAction) {
+    private static void shouldNotBeAllowedWhenPerforming(Executable withdrawAction) {
         assertThrows(InsufficientBalanceException.class, withdrawAction);
     }
 
-    private static void withdrawThree(Account account) throws InsufficientBalanceException {
+    private static void withdrawThreeFrom(Account account) throws InsufficientBalanceException {
         var three = Money.from(3d);
         account.withdraw(three);
     }
+    private static void withdrawTwoFrom(Account account) throws InsufficientBalanceException {
+        var three = Money.from(2d);
+        account.withdraw(three);
+    }
 
-    private static Executable withdrawHundred(Account account) {
+    private static Executable withdrawHundredFrom(Account account) {
         return withdrawAction(account, Money.from(200d));
     }
 
