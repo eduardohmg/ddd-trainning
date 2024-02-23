@@ -20,8 +20,7 @@ class AccountTest {
     }
 
     private Account accountWithTen() {
-        Account account = new Account(Money.from(10d));
-        return account;
+        return new Account(Money.from(10d));
     }
 
     private static void shouldNotBeAllowed(Executable withdrawAction) {
@@ -29,14 +28,12 @@ class AccountTest {
     }
 
     private static Executable withdrawHundred(Account account) {
-        var withdrawAction = withdrawAction(account, Money.from(200d));
-        return withdrawAction;
+        return withdrawAction(account, Money.from(200d));
     }
 
     private static Executable withdrawAction(Account account, Money amount) {
-        Executable withdrawAction = () -> {
+        return () -> {
             account.withdraw(amount);
         };
-        return withdrawAction;
     }
 }
