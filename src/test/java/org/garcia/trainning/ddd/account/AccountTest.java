@@ -1,5 +1,6 @@
 package org.garcia.trainning.ddd.account;
 
+import org.garcia.trainning.ddd.account.actions.withdraw.InsufficientBalanceException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
