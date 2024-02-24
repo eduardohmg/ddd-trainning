@@ -11,22 +11,22 @@ import java.util.UUID;
 
 public class Account {
 
-    private AccountID id;
+    private final AccountID id;
     private Money balance;
     private final List<DomainEvent> uncommittedChanges;
 
-    public Account(AccountID accountID, Money balance) {
+    public Account(final AccountID accountID, final Money balance) {
         this.id = accountID;
         this.balance = balance;
         this.uncommittedChanges = new ArrayList<>();
     }
 
-    private Account(AccountID accountID) {
+    private Account(final AccountID accountID) {
         this.id = accountID;
         this.uncommittedChanges = new ArrayList<>();
     }
 
-    public static Account openWith(Money balance) {
+    public static Account openWith(final Money balance) {
         var accountID = AccountID.from(UUID.randomUUID().toString());
 
         var newAccount = new Account(accountID);
@@ -44,7 +44,7 @@ public class Account {
         return balance;
     }
 
-    public void withdraw(Money amount) throws InsufficientBalanceException {
+    public void withdraw(final Money amount) throws InsufficientBalanceException {
         if (balance.amount() < amount.amount()) {
             throw new InsufficientBalanceException();
         }
@@ -52,12 +52,12 @@ public class Account {
         apply(new MoneyWithdrawn(this.id, amount));
     }
 
-    private void apply(AccountOpened event) {
+    private void apply(final AccountOpened event) {
         this.uncommittedChanges.add(event);
         this.balance = event.balance();
     }
 
-    private void apply(MoneyWithdrawn event) {
+    private void apply(final MoneyWithdrawn event) {
         this.uncommittedChanges.add(event);
         balance = new Money(balance.amount() - event.amount().amount());
     }

@@ -7,11 +7,11 @@ public class AccountService {
 
     private final AccountInMemoryRepository repository;
 
-    public AccountService(AccountInMemoryRepository repository) {
+    public AccountService(final AccountInMemoryRepository repository) {
         this.repository = repository;
     }
 
-    public void withdraw(AccountID accountID, Money amount) throws InsufficientBalanceException {
+    public void withdraw(final AccountID accountID, final Money amount) throws InsufficientBalanceException {
         var account = repository.loadAccountFrom(accountID);
         account.withdraw(amount);
         repository.update(account);

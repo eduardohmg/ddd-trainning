@@ -15,7 +15,7 @@ public class AccountInMemoryRepository implements AccountRepository {
         this.accounts = new ArrayList<>();
     }
 
-    public Account loadAccountFrom(AccountID accountID) {
+    public Account loadAccountFrom(final AccountID accountID) {
         var savedAccount = accounts.stream()
                 .filter(account -> account.getID().equals(accountID))
                 .findFirst()
@@ -24,7 +24,7 @@ public class AccountInMemoryRepository implements AccountRepository {
         return new Account(savedAccount.getID(), savedAccount.getBalance());
     }
 
-    public void update(Account account) {
+    public void update(final Account account) {
         var savedAccount = accounts.stream()
                 .filter(acc -> acc.getID().equals(account.getID()))
                 .findFirst();
