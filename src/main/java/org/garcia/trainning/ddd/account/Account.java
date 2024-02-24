@@ -3,6 +3,7 @@ package org.garcia.trainning.ddd.account;
 import org.garcia.trainning.ddd.account.actions.open.AccountOpened;
 import org.garcia.trainning.ddd.account.actions.withdraw.InsufficientBalanceException;
 import org.garcia.trainning.ddd.account.actions.withdraw.MoneyWithdrawn;
+import org.garcia.trainning.ddd.archetype.DomainEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ public class Account {
 
     private AccountID id;
     private Money balance;
-    private final List<MoneyWithdrawn> uncommittedChanges;
+    private final List<DomainEvent> uncommittedChanges;
 
     public Account(AccountID accountID, Money balance) {
         this.id = accountID;
@@ -52,6 +53,7 @@ public class Account {
     }
 
     private void apply(AccountOpened event) {
+        this.uncommittedChanges.add(event);
         this.balance = event.balance();
     }
 
@@ -60,7 +62,7 @@ public class Account {
         balance = new Money(balance.amount() - event.amount().amount());
     }
 
-    public List<MoneyWithdrawn> getUncommittedChanges() {
+    public List<DomainEvent> getUncommittedChanges() {
         return this.uncommittedChanges;
     }
 }

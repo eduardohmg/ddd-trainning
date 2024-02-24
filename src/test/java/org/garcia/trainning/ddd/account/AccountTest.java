@@ -1,6 +1,8 @@
 package org.garcia.trainning.ddd.account;
 
+import org.garcia.trainning.ddd.account.actions.open.AccountOpened;
 import org.garcia.trainning.ddd.account.actions.withdraw.InsufficientBalanceException;
+import org.garcia.trainning.ddd.account.actions.withdraw.MoneyWithdrawn;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
@@ -52,27 +54,43 @@ class AccountTest {
         withdrawTwoFrom(account);
 
         // Then
-        thereAreTwoUncommitedChangesInThe(account);
-        firstChangeIsTheWithdrawThreeFrom(account);
-        secondChangeIsTheWithdrawTwoFrom(account);
+        thereAreThreeUncommitedChangesInThe(account);
+        firstChangeIsTheAccountOpenedWithTen(account);
+        secondChangeIsTheWithdrawThreeFrom(account);
+        thirdChangeIsTheWithdrawTwoFrom(account);
+    }
+
+    private void firstChangeIsTheAccountOpenedWithTen(Account account) {
+        assertInstanceOf(AccountOpened.class, account.getUncommittedChanges().getFirst());
+
+        var event = (AccountOpened) account.getUncommittedChanges().getFirst();
+        assertEquals(account.getID(), event.accountID());
     }
 
     private static void accountHaveDifferentIDs(Account firstAccount, Account secondAccount) {
         assertNotEquals(firstAccount.getID(), secondAccount.getID());
     }
 
-    private static void secondChangeIsTheWithdrawTwoFrom(Account account) {
-        assertEquals(account.getID(), account.getUncommittedChanges().get(1).accountID());
-        assertEquals(Money.from(2d), account.getUncommittedChanges().get(1).amount());
+    private static void secondChangeIsTheWithdrawThreeFrom(Account account) {
+        var event = account.getUncommittedChanges().get(1);
+        assertInstanceOf(MoneyWithdrawn.class, event);
+
+        var withdraw = (MoneyWithdrawn) event;
+        assertEquals(account.getID(), withdraw.accountID());
+        assertEquals(Money.from(3d), withdraw.amount());
     }
 
-    private static void firstChangeIsTheWithdrawThreeFrom(Account account) {
-        assertEquals(account.getID(), account.getUncommittedChanges().get(0).accountID());
-        assertEquals(Money.from(3d), account.getUncommittedChanges().get(0).amount());
+    private static void thirdChangeIsTheWithdrawTwoFrom(Account account) {
+        var event = account.getUncommittedChanges().get(2);
+        assertInstanceOf(MoneyWithdrawn.class, event);
+
+        var withdraw = (MoneyWithdrawn) event;
+        assertEquals(account.getID(), withdraw.accountID());
+        assertEquals(Money.from(2d), withdraw.amount());
     }
 
-    private static void thereAreTwoUncommitedChangesInThe(Account account) {
-        assertEquals(2, account.getUncommittedChanges().size());
+    private static void thereAreThreeUncommitedChangesInThe(Account account) {
+        assertEquals(3, account.getUncommittedChanges().size());
     }
 
     private void balanceShouldBeSeven(Account account) {
