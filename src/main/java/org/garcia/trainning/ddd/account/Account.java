@@ -23,6 +23,7 @@ public class Account {
 
     private Account(final AccountID accountID) {
         this.id = accountID;
+        this.balance = Money.from(0);
         this.uncommittedChanges = new ArrayList<>();
     }
 
@@ -34,6 +35,24 @@ public class Account {
         newAccount.apply(new AccountOpened(accountID, balance));
 
         return newAccount;
+    }
+
+    public static Account restoreFromHistory(List<DomainEvent> history) {
+
+        if (history.getFirst() instanceof AccountOpened accountOpened) {
+            final var account = new Account(accountOpened.accountID(), accountOpened.balance());
+
+            // apply all event skipping first one
+            history.stream().skip(1).forEach(event -> {
+                if (event instanceof MoneyWithdrawn moneyWithdrawn) {
+                    account.apply(moneyWithdrawn);
+                }
+            });
+
+            return account;
+        }
+
+        return null;
     }
 
     public AccountID getID() {

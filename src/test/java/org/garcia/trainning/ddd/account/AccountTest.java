@@ -3,8 +3,11 @@ package org.garcia.trainning.ddd.account;
 import org.garcia.trainning.ddd.account.actions.open.AccountOpened;
 import org.garcia.trainning.ddd.account.actions.withdraw.InsufficientBalanceException;
 import org.garcia.trainning.ddd.account.actions.withdraw.MoneyWithdrawn;
+import org.garcia.trainning.ddd.archetype.DomainEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,6 +61,24 @@ class AccountTest {
         firstChangeIsTheAccountOpenedWithTen(account);
         secondChangeIsTheWithdrawThreeFrom(account);
         thirdChangeIsTheWithdrawTwoFrom(account);
+    }
+
+    @Test
+    void should_Restore_Account_From_History() {
+        // Given
+        var accountID = AccountID.from("123");
+        var initialBalance = Money.from(10d);
+        var finalBalance = Money.from(7d);
+        var history = new ArrayList<DomainEvent>();
+        history.add(new AccountOpened(accountID, initialBalance));
+        history.add(new MoneyWithdrawn(accountID, Money.from(3d)));
+
+        // When
+        var account = Account.restoreFromHistory(history);
+
+        // Then
+        assertEquals(accountID, account.getID());
+        assertEquals(finalBalance, account.getBalance());
     }
 
     private void firstChangeIsTheAccountOpenedWithTen(Account account) {
