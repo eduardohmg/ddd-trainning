@@ -79,6 +79,7 @@ class AccountTest {
         // Then
         assertEquals(accountID, account.getID());
         assertEquals(finalBalance, account.getBalance());
+        assertEquals(0, account.getUncommittedChanges().size());
     }
 
     private void firstChangeIsTheAccountOpenedWithTen(Account account) {

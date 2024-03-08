@@ -32,7 +32,7 @@ public class Account {
 
         var newAccount = new Account(accountID);
 
-        newAccount.apply(new AccountOpened(accountID, balance));
+        newAccount.emit(new AccountOpened(accountID, balance));
 
         return newAccount;
     }
@@ -68,16 +68,24 @@ public class Account {
             throw new InsufficientBalanceException();
         }
 
-        apply(new MoneyWithdrawn(this.id, amount));
+        emit(new MoneyWithdrawn(this.id, amount));
+    }
+
+    private void emit(final AccountOpened event) {
+        this.uncommittedChanges.add(event);
+        this.apply(event);
+    }
+
+    private void emit(final MoneyWithdrawn event) {
+        this.uncommittedChanges.add(event);
+        this.apply(event);
     }
 
     private void apply(final AccountOpened event) {
-        this.uncommittedChanges.add(event);
         this.balance = event.balance();
     }
 
     private void apply(final MoneyWithdrawn event) {
-        this.uncommittedChanges.add(event);
         balance = new Money(balance.amount() - event.amount().amount());
     }
 
