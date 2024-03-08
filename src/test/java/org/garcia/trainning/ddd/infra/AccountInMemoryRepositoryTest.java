@@ -3,7 +3,6 @@ package org.garcia.trainning.ddd.infra;
 import org.garcia.trainning.ddd.account.Account;
 import org.garcia.trainning.ddd.account.AccountID;
 import org.garcia.trainning.ddd.account.Money;
-import org.garcia.trainning.ddd.infra.AccountInMemoryRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
