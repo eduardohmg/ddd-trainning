@@ -37,7 +37,7 @@ public class Account {
         return newAccount;
     }
 
-    // add test comment
+    // add test comment 2
     public static Account restoreFromHistory(List<DomainEvent> history) {
 
         if (history.getFirst() instanceof AccountOpened accountOpened) {
